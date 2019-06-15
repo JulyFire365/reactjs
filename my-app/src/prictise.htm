@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdn.bootcss.com/prop-types/15.6.1/prop-types.js"></script>
+</head>
+
+<body>
+    <div id="example"></div>
+    <script type="text/babel">
+        function FormatTime(props){
+            return <div>{props.date.toLocaleString()}</div> 
+        }
+
+        class Clock extends React.Component {
+            constructor(props){
+                super(props);
+                this.state = {
+                    date : new Date()
+                }
+            }
+
+            propTypes : {
+                date: React.PropTypes.number.isRequired
+            }
+
+            componentDidMount(){
+                this.timeId = setInterval(()=>{
+                    this.tick()
+                },1000)
+            }
+
+            componentWillUnmount(){
+                clearInterval(this.timeId)
+            }
+
+            tick(){
+                this.setState({
+                    date: new Date()
+                })
+            }
+
+            render(){
+                return (<div><FormatTime date={this.state.date}/></div>)
+            }
+        }
+
+        ReactDOM.render(
+            <div>
+                <Clock />
+                <Clock />
+                <Clock />
+            </div>,
+            document.getElementById('example')
+        )
+    </script>
+</body>
+
+</html>

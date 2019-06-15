@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>React 实例</title>
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+
+<body>
+
+    <div id="example"></div>
+    <script type="text/babel">
+        class Hello extends React.Component {
+            constructor(props){
+                super(props);
+                this.state = {
+                    name: "wang",
+                    age: 31,
+                    prop: props.name,
+                    opacity: props.opacity
+                };
+                this.handleEvent = this.handleEvent.bind(this);
+            }
+
+            handleEvent() {
+                this.setState(prevState => ({
+                    age: prevState.age + 2
+                }))
+            }
+
+            componentWillMount(){
+                console.log("数据渲染前："+this.state.prop)
+            }
+
+            componentDidMount(){
+              
+                this.timeId = setInterval(()=>{
+                    let opacity = this.state.opacity;
+                    opacity -= 0.05;
+                    if(opacity < 0.2){
+                        opacity = 1
+                    }
+                    this.setState({
+                        opacity: opacity
+                    })
+                },100);
+                console.log("组件已挂载："+this.state.prop); 
+
+            }
+
+            componentWillReceieveProps(){
+                console.log("新的参数："+this.state.prop)
+            }
+
+            // shouldComponentUpdate(){
+            //     console.log("接收新的参数或者state："+this.state.name)
+            // }
+
+            componentWillUpdate(){
+                console.log("更新前："+this.state.opacity)
+            }
+
+            componentDidUpdate(){
+                console.log("更新后："+this.state.age)
+            }
+
+            componentWillUnmount(){
+                console.log("卸载前："+this.state.age)
+            }
+
+            render(){
+                let propName = this.state.prop;
+                let name = this.state.name;
+                let age = this.state.age;
+                let style = {"opacity": this.state.opacity};
+         
+                return (<div style={style} onClick={this.handleEvent}>Your name is {propName}. age: {age}</div>)
+            }
+        }
+
+        class ClickHello extends React.Component {
+            constructor(){
+                super();
+                this.state = {
+                    name: "Big John",
+                    age: 40,
+                    opacity: 0.5
+                }
+            }
+
+            render(){
+                return <Hello name="Samll Brad" opacity={this.state.opacity}/>
+            }
+        }
+
+        ReactDOM.render(<ClickHello />,document.getElementById('example'))
+    </script>
+</body>
+
+</html>
